@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" ng-app="quizApp">
+	<head >
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>QUIZ</title>
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/app.css" rel="stylesheet">
+
+		<style type="text/css">
+			.styled-select {
+				width: 240px;
+				height: 34px;
+				overflow: hidden;
+				background: url(new_arrow.png) no-repeat right #ddd;
+				border: 1px solid #ccc;
+			}
+			.containerTemp {
+				width: 900px;
+				height: auto;
+				background-color: #DDD;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 60px;
+				-webkit-border-radius: 15px;
+				border-radius: 15px;
+			}
+			.menu1 {
+				width: 900px;
+				height: 31px;
+				background: silver;
+				-webkit-border-radius: 15px;
+				border-radius: 15px;
+				text-align: center;
+				vertical-align: middle;
+			}
+			#sidebar1 {
+
+				width: 600px;
+				height: 400px;
+				background: #006600;
+				float: left;
+				margin-top: 10;
+				-webkit-border-radius: 15px;
+				border-radius: 15px;
+			}
+			.sidebar2 {
+				width: 870px;
+				height: auto;
+				background: white;
+				float: right;
+				margin-right: 10px;
+				margin-left: 25px;
+				-webkit-border-radius: 15px;
+				border-radius: 11px;
+				border-color: black;
+				padding-left: 50;
+				padding-top: 40;
+			}
+			#footer {
+				width: 600px;
+				height: 35px;
+				background: black;
+				margin-top: 15px;
+				clear: both;
+				-webkit-border-radius: 15px;
+				border-radius: 15px;
+			}
+			.quiz-area
+			{
+			padding-left:128px;
+			padding-top:50px;
+			padding-bottom:20px;
+			}
+
+		</style>
+
+		<style type="text/css">
+			.paragraph {
+				border: 2px solid;
+				padding: 10px 40px;
+				width: 350px;
+				resize: both;
+				overflow: auto;
+			}
+			.draggable {
+				width: auto;
+				height: auto;
+				padding: 0.5em;
+				float: left;
+				margin: 10px 10px 10px 0;
+			}
+			.droppable {
+				clear: both;
+				border: 1px solid;
+				width: 150px;
+				height: 40px;
+			}
+			.sortable {
+				list-style-type: none;
+				margin: 0;
+				padding: 0;
+				width: 25%;
+			}
+			.sortable li {
+				margin: 0 3px 3px 3px;
+				padding: 0.4em;
+				padding-left: 1.5em;
+				font-size: 1.2em;
+				height: 16px;
+			}
+			.sortable li span {
+				position: absolute;
+				margin-left: -1.3em;
+			}
+			.options > div {
+				border: solid black 1px;
+				padding: 3px;
+				margin: 5px;
+				color: black;
+				background-color: #61BCED;
+				float: left;
+			}
+
+			.dvLoading {
+				background: url('img/loading.gif') no-repeat center center;
+				height: 100px;
+				width: 100px;
+				position: fixed;
+				z-index: 1000;
+				left: 50%;
+				top: 50%;
+				margin: -25px 0 0 -25px;
+			}
+			input {
+
+				padding: 0 !important;
+				margin: 0 !important;
+			}
+
+		</style>
+		<!--End of styles tags -->
+	</head>
+	<body>
+	<script src="js/angular.js"></script>
+		<script  src="controllers/quiz-controller.js"></script>
+          <script src="services/quiz-api-service.js"></script>
+	
+		<div  class="container" ng-controller="quizAppController">
+		<div  class="containerTemp" id="qpPlayer" >
+				<div style="height: 20px" align="middle">
+                   QUIZ APP
+				</div>
+				<div class="menu1" id="" ng-init="loadQuiz()">
+					<div  class="" align="left">&nbsp
+						<b>LEVEL :{{currentLevel+1}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<b> Question:{{currentQuestn+1}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<b>LEVEL TITLE</b>--{{level_title}}
+						
+					</div>
+				</div>
+				<div id="qpBody" class="sidebar2" >
+ 
+ <p align="center" style="height: 20px" ng-show="level_completed==true" ><b>Your LEVEL Score is:{{level_score}}<b></p>
+ 				<p align="center" style="height: 20px" ng-show="show_total_quiz==true" ><b>Your TOTAL Score is:{{total_score}}<b></p>
+
+	<p align="center" style="height: 20px" ng-show="show_total_quiz==true" ><b>Feedback is:{{result}}<b></p>
+ <div  ng-show="level_completed==false" >
+				<div  class="quiz-area" >
+			 
+
+			 <h2 id="question">{{question}}</h2>
+     	   
+	
+			<div ng-repeat="option in options">
+				<label class="control-label">
+					<input type="radio" name="answer" value="{{option}}" ng-click="selectAnswer(option)">
+					{{option}}
+				</label>
+			</div>
+			</div>
+			</div>
+			</div>
+			<div class="" id="button" align="middle">
+			<label ng-hide="level_completed==true">
+						TImer  :{{counter}}
+					</label>
+			<button class="btn btn-primary" id="nextLevel" type="button" ng-click="LoadNextLevel()" ng-show="level_completed==true &&show_total_quiz==false"
+			>
+						GO TO  LEVEL {{currentLevel+2}}
+					</button>
+				</div>
+
+			</div>
+		</div>
+
+		</div>
+	</body>
+</html>
+
